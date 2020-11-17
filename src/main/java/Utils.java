@@ -1,0 +1,57 @@
+public class Utils {
+    /**
+     * finite multiplication in Galois Field
+     * we multiply 2 polynomials A(x) * B(x) represented as bits of a and b = C'(x)
+     * and we reduce C'(x) by AES irreducible polynomial (x^8 + x^4 + x^3 + x + 1)
+     * and we get the result
+     */
+    static public byte fMul(byte a, byte b) {
+        int tmp = polynomialMultiplication(a, b);
+        return polynomialModuloDivision(tmp);
+    }
+
+    static public int polynomialMultiplication(byte a, byte b){
+        int result = 0;
+        int aTmp;
+        int bTmp;
+        for (int i = 0; i < 8; i++) { // for each bit in a
+            for (int j = 0; j < 8; j++) { // for each bit in b
+                aTmp = a & (1 << i); // when i = 1 -> value of 2^1, when i = 2 -> value of 2^2
+                bTmp = b & (1 << j);
+                if (aTmp !=0 && bTmp != 0) { // if both values or not 0s we can multiply
+                    //potential 1 is at i+j index of result
+                    // if 1 already exists we can make switch it to 0 ( because coefficient has to be in GF(2) )
+                    result ^= (1 << (i+j));
+                }
+            }
+        }
+        return result;
+    }
+
+
+    // divide by (x^8 + x^4 + x^3 + x + 1) = 0b100011011
+    // returns modulo polynomial
+    // take a -> xor first bits by 100011011 shifted by correct amount of bits
+    // repeat until a <= 255
+    static public byte polynomialModuloDivision(int a){
+        while (a > 255){
+            int shift = getFirstBit(a) - 8;
+            a = a ^ (0b100011011 << shift);
+        }
+        return (byte)a;
+    }
+
+    /**
+     * @param a int
+     * @return first bit set as 1 in an int 32 means biggest value 0 means 0 or 1 number was inputted.
+     */
+    static public int getFirstBit(int a){
+        int first = 0;
+        for (int i = 0; i < 32; i++) {
+            if ((a & (1 << i)) != 0) {
+                first = i;
+            }
+        }
+        return first;
+    }
+}

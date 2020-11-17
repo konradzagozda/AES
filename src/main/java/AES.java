@@ -51,10 +51,13 @@ public class AES {
     }
 
     private byte[] encrypt(byte[] blok) {
+        //todo
         return new byte[1];
     }
 
     private byte[][] generateKey(byte[] key) {
+        //todo
         return new byte[1][1];
     }
+
 }
