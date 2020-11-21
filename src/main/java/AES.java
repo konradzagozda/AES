@@ -1,8 +1,12 @@
-import java.util.Arrays;
 public class AES {
 
-    byte[][] subKeys; // 44 column wide key
+    byte[][] keyWords = new byte[44][4]; // 44 words of 32(4bytes) bits
+    byte[] originalKey;
 
+    public AES(byte[] originalKey) {
+        this.originalKey = originalKey;
+        generateSubKeys(originalKey);
+    }
 
     /**
      * Encrypt whole thing
@@ -10,6 +14,9 @@ public class AES {
      * @param key     - 16 byte key
      * @return - encoded bytes
      */
+
+
+
     public byte[] encode(byte[] message, byte[] key){
 
         int wholeBlocksCount = message.length / 16;
@@ -25,7 +32,7 @@ public class AES {
         byte[] result = new byte[charactersToEncodeCount];
         byte[] temp = new byte[charactersToEncodeCount];
         byte[] blok = new byte[16];
-        this.subKeys = this.generateSubKeys(key);
+
 
 
         // rewrite message to temporary array + append 0s
@@ -56,15 +63,88 @@ public class AES {
      * @param state - 128 bit - 16 byte block
      * @return encrypted 16 block
      */
-    private byte[] encrypt(byte[] state) {
-        //todo
-        return new byte[1];
+    public byte[] encrypt(byte[] state) {
+        byte[] tmp = state;
+
+        tmp = addKey(tmp,0);
+
+        // first round
+        tmp = subBytes(tmp);
+        tmp = shiftRows(tmp);
+        tmp = mixColumns(tmp);
+        tmp = addKey(tmp, 1);
+
+        // rounds 2 - 9
+        for (int i = 2; i < 10; i++) {
+            tmp = subBytes(tmp);
+            tmp = shiftRows(tmp);
+            tmp = mixColumns(tmp);
+            tmp = addKey(tmp, 2);
+        }
+
+        // last round
+        tmp = subBytes(tmp);
+        tmp = shiftRows(tmp);
+        tmp = addKey(tmp, 10);
+
+        return tmp;
     }
 
-    private byte[][] generateSubKeys(byte[] keyInput) {
-        // 11 subkeys thus 44 columns of key
-        //todo
-        return new byte[1][1];
+    private void generateSubKeys(byte[] keyInput) {
+        // copy original key to first 4 words:
+        int j = 0;
+        for (int i = 0; i < 4; i++) {
+            for (int k = 0; k < 4; k++) {
+                keyWords[i][k] = keyInput[j];
+            }
+        }
+
+        for (int round = 1; round <= 10; round++) {
+            keyWords[4*round] = xorWords(keyWords[4*round-4], g(keyWords[4*round-1], round));
+            keyWords[4*round+1] = xorWords(keyWords[4*round], keyWords[4*round-3]);
+            keyWords[4*round+2] = xorWords(keyWords[4*round+1], keyWords[4*round-2]);
+            keyWords[4*round+2] = xorWords(keyWords[4*round+2], keyWords[4*round-1]);
+        }
+    }
+
+    public byte[] xorWords(byte[] word1, byte[] word2) {
+        if (word1.length == word2.length){
+            byte[] tmp = new byte[word1.length];
+            for (int i = 0; i < word1.length; i++) {
+                tmp[i] = (byte)(word1[i] ^ word2[i]);
+            }
+            return tmp;
+        } else {
+            return null;
+        }
+    }
+
+    public byte[] g(byte[] word, int round) {
+        byte[] tmp = shiftArrayLeft(word, 1);
+        for (int i = 0; i < 4; i++) {
+            tmp[i] = SBox.translate(tmp[i]);
+        }
+
+        // round coefficient added to first element
+        byte RC = Utils.polynomialModuloDivision((byte)(0b1 << (round-1)));
+        tmp[0] ^= RC;
+
+        return tmp;
+    }
+
+    public byte[] addKey(byte[] state, int round){
+        // round = 1
+        byte[] tmp = new byte[state.length];
+        int start = round*4;
+        int end = start + 4; // not inclusive
+        int k = 0;
+        for (int i = start; i < end; i++) { // iterate over words
+            for (int j = 0; j < 4; j++) { // iterate over bytes in words
+                tmp[k] = (byte) (state[k] ^ keyWords[i][j]);
+                k++;
+            }
+        }
+        return tmp;
     }
 
 

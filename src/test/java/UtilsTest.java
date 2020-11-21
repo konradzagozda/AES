@@ -17,6 +17,14 @@ class UtilsTest {
 
     @Test
     void polynomialDivisionTest() {
+        assertEquals(0b1, Utils.polynomialModuloDivision(0b1));
+        assertEquals(0b10, Utils.polynomialModuloDivision(0b10));
+        assertEquals(0b100, Utils.polynomialModuloDivision(0b100));
+        assertEquals(0b1000, Utils.polynomialModuloDivision(0b1000));
+        assertEquals(0b10000, Utils.polynomialModuloDivision(0b10000));
+        assertEquals(0b1000_00, Utils.polynomialModuloDivision(0b1000_00));
+        assertEquals(0b1000_000, Utils.polynomialModuloDivision(0b1000_000));
+        assertEquals((byte)0b1000_0000, Utils.polynomialModuloDivision(0b1000_0000));
         assertEquals(0b11011, Utils.polynomialModuloDivision(0b100000000));
         assertEquals(0b11010, Utils.polynomialModuloDivision(0b100000001));
         assertEquals(0b101100, Utils.polynomialModuloDivision(0b1100000001));

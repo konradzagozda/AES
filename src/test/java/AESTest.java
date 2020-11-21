@@ -10,7 +10,7 @@ class AESTest {
 
     @BeforeEach
     void init() {
-        this.aes = new AES();
+        this.aes = new AES(new byte[]{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0});
     }
 
     @Test
@@ -41,6 +41,22 @@ class AESTest {
         expected = new byte[]{3,0,1,2};
         System.out.println(Arrays.toString(shifted));
         assertArrayEquals(expected, shifted);
+    }
+
+    @Test
+    void encryptTest() {
+        byte[] state = new byte[]{0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15};
+        byte[] out = aes.encrypt(state);
+        System.out.println(Arrays.toString(state));
+        System.out.println(Arrays.toString(out));
+        assertNotNull(out);
+
+        byte[] state2 = new byte[]{0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,16};
+        byte[] out2 = aes.encrypt(state2);
+        System.out.println(Arrays.toString(state2));
+        System.out.println(Arrays.toString(out2));
+        assertNotNull(out2);
+
     }
 
 }
