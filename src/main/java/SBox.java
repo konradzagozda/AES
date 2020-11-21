@@ -39,4 +39,9 @@ public class SBox {
     };
 
 
+    static byte translate(byte b) {
+        int x = (b & 0b11110000) >> 4;
+        int y = b & 0b00001111;
+        return (byte)sBox[x][y];
+    }
 }
