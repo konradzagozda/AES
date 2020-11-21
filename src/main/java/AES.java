@@ -25,7 +25,7 @@ public class AES {
         byte[] result = new byte[charactersToEncodeCount];
         byte[] temp = new byte[charactersToEncodeCount];
         byte[] blok = new byte[16];
-        this.subKeys = this.generateKey(key);
+        this.subKeys = this.generateSubKeys(key);
 
 
         // rewrite message to temporary array + append 0s
