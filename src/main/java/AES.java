@@ -4,7 +4,10 @@ public class AES {
     byte[][] keyWordsReversed; // for decryption
     byte[] entranceKey;
 
-    public AES(byte[] originalKey) {
+    public AES(byte[] originalKey) throws Exception {
+        if(originalKey.length != 16){
+            throw new Exception("key has wrong length!");
+        }
         this.entranceKey = originalKey;
         this.keyWords = generateSubKeys(entranceKey);
         this.keyWordsReversed = generateReversedSubKeys(keyWords);
@@ -27,11 +30,10 @@ public class AES {
      * Encrypt whole thing
      *
      * @param message - bytes to encrypt
-     * @param key     - 16 byte key
      * @return - encoded bytes
      */
 
-    public byte[] encode(byte[] message, byte[] key) {
+    public byte[] encode(byte[] message) {
 
         int wholeBlocksCount = message.length / 16;
         int charactersToEncodeCount;
@@ -69,6 +71,52 @@ public class AES {
         }
 
         return result;
+    }
+
+    public byte[] decode(byte[] message) {
+        if (message.length % 16 != 0) {
+            return null;
+        }
+
+        int blocksCount = message.length / 16;
+        byte[][] dataAsBlocks = new byte[blocksCount][16];
+
+        // load data as blocks:
+
+        int i = 0;
+        for (int block = 0; block < blocksCount; block++) {
+            for (int b = 0; b < 16; b++) {
+                dataAsBlocks[block][b] = message[i];
+                i++;
+            }
+        }
+
+
+        i = 0;
+
+        byte[] tmp = new byte[message.length];
+        for (int block = 0; block < blocksCount; block++) {
+            for (int b = 0; b < 16; b++) {
+                tmp[i] = decrypt(dataAsBlocks[block])[b];
+                i++;
+            }
+        }
+
+        // count trailing zeros in tmp...
+        int zeros = 0;
+        for (int j = 0; j < 16; j++) {
+            if (tmp[tmp.length-(j+1)] == '\0'){
+                zeros++;
+            } else {
+                break;
+            }
+        }
+
+        byte[] output = new byte[blocksCount*16 - zeros];
+        System.arraycopy(tmp,0,output,0, blocksCount*16 - zeros);
+
+
+        return output;
     }
 
 

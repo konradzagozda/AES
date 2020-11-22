@@ -9,8 +9,8 @@ class AESTest {
     AES aes;
 
     @BeforeEach
-    void init() {
-        this.aes = new AES(new byte[]{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0});
+    void init() throws Exception {
+        this.aes = new AES(new byte[]{63, -19, -50, -121, -122, 114, 53, 72, -87, -105, 72, 11, 11, 57, 52, -115});
     }
 
     @Test
@@ -102,8 +102,25 @@ class AESTest {
     void reverseKeyTest() {
         System.out.println(Arrays.deepToString(aes.getKeyWords()));
         System.out.println(Arrays.deepToString(aes.getKeyWordsReversed()));
-
     }
+
+    @Test
+    void encodeDecodeTest() {
+        byte[] encoded = aes.encode("1234567891123456".getBytes());
+        byte[] encrypted = aes.encrypt("1234567891123456".getBytes());
+        assertArrayEquals(encoded, encrypted);
+
+
+
+
+        System.out.println(Arrays.toString("123".getBytes()));
+        encoded = aes.encode("123".getBytes());
+        System.out.println(Arrays.toString(encoded));
+        byte[] decoded = aes.decode(encoded);
+        System.out.println(Arrays.toString(decoded));
+    }
+
+
 
 
 

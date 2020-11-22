@@ -1,5 +1,8 @@
 import org.junit.jupiter.api.Test;
 
+import java.util.Arrays;
+
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class UtilsTest {
@@ -28,6 +31,11 @@ class UtilsTest {
         assertEquals(0b11011, Utils.polynomialModuloDivision(0b100000000));
         assertEquals(0b11010, Utils.polynomialModuloDivision(0b100000001));
         assertEquals(0b101100, Utils.polynomialModuloDivision(0b1100000001));
+    }
+
+    @Test
+    void convertStringToByteArrayTest() {
+        assertArrayEquals(new byte[]{1, 16}, Utils.hexStringToByteArray("0110"));
     }
 
 }
