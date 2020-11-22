@@ -44,12 +44,39 @@ class AESTest {
     }
 
     @Test
+    void shiftArrayRightTest() {
+        byte[] state = new byte[]{0,1,2,3};
+        byte[] shifted = aes.shiftArrayRight(state,1);
+        byte[] expected = new byte[]{3,0,1,2};
+        System.out.println(Arrays.toString(shifted));
+        assertArrayEquals(expected, shifted);
+
+        state = new byte[]{0,1,2,3};
+        shifted = aes.shiftArrayRight(state,2);
+        expected = new byte[]{2,3,0,1};
+        System.out.println(Arrays.toString(shifted));
+        assertArrayEquals(expected, shifted);
+
+        state = new byte[]{0,1,2,3};
+        shifted = aes.shiftArrayRight(state,3);
+        expected = new byte[]{1,2,3,0};
+        System.out.println(Arrays.toString(shifted));
+        assertArrayEquals(expected, shifted);
+    }
+
+    @Test
     void encryptTest() {
         byte[] state = new byte[]{0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15};
         byte[] out = aes.encrypt(state);
         System.out.println(Arrays.toString(state));
         System.out.println(Arrays.toString(out));
         assertNotNull(out);
+
+        byte[] state3 = new byte[]{0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15};
+        byte[] out3 = aes.encrypt(state3);
+        System.out.println(Arrays.toString(state3));
+        System.out.println(Arrays.toString(out3));
+        assertNotNull(out3);
 
         byte[] state2 = new byte[]{0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,16};
         byte[] out2 = aes.encrypt(state2);
@@ -58,5 +85,26 @@ class AESTest {
         assertNotNull(out2);
 
     }
+
+    @Test
+    void decryptTest() {
+        byte[] state = new byte[]{0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15};
+        byte[] out = aes.encrypt(state);
+        System.out.println(Arrays.toString(state));
+        System.out.println(Arrays.toString(out));
+        System.out.println("DECRYPTION:");
+        byte[] decrypted = aes.decrypt(out);
+        System.out.println(Arrays.toString(decrypted));
+        assertNotNull(out);
+    }
+
+    @Test
+    void reverseKeyTest() {
+        System.out.println(Arrays.deepToString(aes.getKeyWords()));
+        System.out.println(Arrays.deepToString(aes.getKeyWordsReversed()));
+
+    }
+
+
 
 }
