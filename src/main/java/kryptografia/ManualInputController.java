@@ -1,3 +1,5 @@
+package kryptografia;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -14,7 +16,6 @@ import org.apache.commons.codec.binary.Hex;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
 import java.util.Random;
 import java.util.ResourceBundle;
 import java.util.regex.Matcher;
@@ -88,7 +89,7 @@ public class ManualInputController implements Initializable {
 
     public void changeSceneToFileMode(ActionEvent actionEvent) {
         try {
-            Parent root = FXMLLoader.load(getClass().getResource("fileView.fxml"));
+            Parent root = FXMLLoader.load(getClass().getResource("/fileView.fxml"));
             Scene scene = new Scene(root);
             Stage window = (Stage) randomKeyButton.getScene().getWindow();
             window.setScene(scene);

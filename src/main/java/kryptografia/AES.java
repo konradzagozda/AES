@@ -1,3 +1,5 @@
+package kryptografia;
+
 public class AES {
 
     byte[][] keyWords; // 44 words of 32(4bytes) bits

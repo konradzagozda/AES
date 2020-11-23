@@ -1,3 +1,5 @@
+package kryptografia;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -15,7 +17,6 @@ import org.apache.commons.io.FileUtils;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.util.Arrays;
 import java.util.Random;
 import java.util.ResourceBundle;
 import java.util.regex.Matcher;
@@ -62,7 +63,7 @@ public class FileInputController implements Initializable {
 
     public void changeSceneToManual(ActionEvent actionEvent) {
         try {
-            Parent root = FXMLLoader.load(getClass().getResource("manualView.fxml"));
+            Parent root = FXMLLoader.load(getClass().getResource("/manualView.fxml"));
             Scene scene = new Scene(root);
             Stage window = (Stage) randomKeyButton.getScene().getWindow();
             window.setScene(scene);

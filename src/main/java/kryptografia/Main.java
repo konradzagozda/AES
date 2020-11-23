@@ -1,3 +1,5 @@
+package kryptografia;
+
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -12,7 +14,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("manualView.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/manualView.fxml"));
         primaryStage.setTitle("AES");
         primaryStage.setScene(new Scene(root, 600, 600));
         primaryStage.show();
