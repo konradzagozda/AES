@@ -1,13 +1,15 @@
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
+import javafx.stage.Stage;
 import org.apache.commons.codec.DecoderException;
 import org.apache.commons.codec.binary.Hex;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.Random;
 import java.util.regex.Matcher;
@@ -16,7 +18,7 @@ import java.util.regex.Pattern;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class Controller implements Initializable {
+public class ManualInputController implements Initializable {
 
     public TextField keyTextField;
     public Button applyKeyButton;
@@ -31,6 +33,7 @@ public class Controller implements Initializable {
     public TextArea rawDataField;
     public TextArea rawDataAsBytesArea;
     public TextArea decipheredAsBytesField;
+    public MenuItem fileModeMenuItem;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -111,5 +114,19 @@ public class Controller implements Initializable {
 //        System.out.println("String: " + Arrays.toString(decoded));
 //        System.out.println("Bytes: " + new String(decoded));
 //        decipheredDataField.setText(new String(decoded));
+    }
+
+    public void changeSceneToFileMode(ActionEvent actionEvent) {
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("fileView.fxml"));
+            Scene scene = new Scene(root);
+            Stage window = (Stage) randomKeyButton.getScene().getWindow();
+            window.setScene(scene);
+            window.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
     }
 }
