@@ -42,12 +42,12 @@ public class SBox {
     static byte translate(byte b) {
         int x = (b & 0b11110000) >> 4;
         int y = b & 0b00001111;
-        return (byte)sBox[x][y];
+        return (byte) sBox[x][y];
     }
 
     static byte translateReverse(byte b) {
         int x = (b & 0b11110000) >> 4;
         int y = b & 0b00001111;
-        return (byte)inv_sbox[x][y];
+        return (byte) inv_sbox[x][y];
     }
 }

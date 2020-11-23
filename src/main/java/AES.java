@@ -5,7 +5,7 @@ public class AES {
     byte[] entranceKey;
 
     public AES(byte[] originalKey) throws Exception {
-        if(originalKey.length != 16){
+        if (originalKey.length != 16) {
             throw new Exception("key has wrong length!");
         }
         this.entranceKey = originalKey;
@@ -105,15 +105,15 @@ public class AES {
         // count trailing zeros in tmp...
         int zeros = 0;
         for (int j = 0; j < 16; j++) {
-            if (tmp[tmp.length-(j+1)] == '\0'){
+            if (tmp[tmp.length - (j + 1)] == '\0') {
                 zeros++;
             } else {
                 break;
             }
         }
 
-        byte[] output = new byte[blocksCount*16 - zeros];
-        System.arraycopy(tmp,0,output,0, blocksCount*16 - zeros);
+        byte[] output = new byte[blocksCount * 16 - zeros];
+        System.arraycopy(tmp, 0, output, 0, blocksCount * 16 - zeros);
 
 
         return output;

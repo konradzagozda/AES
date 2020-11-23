@@ -38,11 +38,7 @@ public class FileInputController implements Initializable {
             Pattern p = Pattern.compile("^[a-fA-F0-9]{32}$");
             Matcher m = p.matcher(keyTextField.getText());
             boolean b = m.matches();
-            if(b){
-                applyKeyButton.setDisable(false);
-            } else {
-                applyKeyButton.setDisable(true);
-            }
+            applyKeyButton.setDisable(!b);
         });
     }
 
@@ -59,7 +55,6 @@ public class FileInputController implements Initializable {
     public void createAESInstance(ActionEvent actionEvent) throws Exception {
         // applyKey calls this method ( knowing the key we can create AES instance )
         byte[] key = Utils.hexStringToByteArray(keyTextField.getText());
-        System.out.println(Arrays.toString(key));
         aes = new AES(key);
         encryptButton.setDisable(false);
         decryptButton.setDisable(false);
