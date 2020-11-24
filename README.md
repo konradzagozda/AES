@@ -6,3 +6,6 @@
   - encryption & decryption of small files
   - key generation
   - key validation
+
+## Algorithm based on:
+Understanding Cryptography by Christof Paar, Jan Pelzl; 2009
